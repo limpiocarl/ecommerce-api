@@ -2,7 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const port = process.env.PORT || 4000;
+const userRoutes = require("./routes/User");
+
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -22,5 +24,7 @@ let db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "Connection Error"));
 db.once("open", () => console.log("Connected to MongoDB"));
+
+app.use("/users", userRoutes);
 
 app.listen(port, () => console.log(`Server is running at ${port}`));
