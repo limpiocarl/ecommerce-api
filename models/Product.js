@@ -28,6 +28,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "Customer is required."],
       },
+      quantity: {
+        type: String,
+        default: 1,
+      },
       totalAmount: {
         type: Number,
         default: 0,

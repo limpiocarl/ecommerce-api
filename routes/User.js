@@ -29,4 +29,16 @@ router.put("/:userId/setAsAdmin", auth.verify, (req, res) => {
   }
 });
 
+// router.post("/checkout", auth.verify, (req, res) => {
+//   const userData = auth.decode(req.headers.authorization);
+//   let data = {
+//     userId: req.body.userId,
+//     productId: req.body.productId,
+//     quantity: req.body.quantity,
+//   };
+//   userController
+//     .checkout(data)
+//     .then((resultFromController) => res.send(resultFromController));
+// });
+
 module.exports = router;

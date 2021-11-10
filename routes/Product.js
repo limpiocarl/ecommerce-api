@@ -11,7 +11,7 @@ router.post("/create", auth.verify, (req, res) => {
       .createProduct(req.body)
       .then((resultFromController) => res.send(resultFromController));
   } else {
-    res.send("Not Authorized to create product.");
+    res.send("Unauthorized to create product.");
   }
 });
 
@@ -23,10 +23,44 @@ router.get("/", (req, res) => {
 });
 
 // retrieve all products
-router.get("/all", (req, res) => {
+router.get("/all", auth.verify, (req, res) => {
+  const userData = auth.decode(req.headers.authorization);
+  if (userData.isAdmin) {
+    productController
+      .getAllProducts()
+      .then((resultFromController) => res.send(resultFromController));
+  } else {
+    res.send("Unauthorized to retrieve all products.");
+  }
+});
+
+// retrieve single product
+router.get("/:productId", (req, res) => {
   productController
-    .getAllProducts()
+    .getProduct(req.params)
     .then((resultFromController) => res.send(resultFromController));
+});
+
+// update product; admin only
+router.put("/:productId/update", auth.verify, (req, res) => {
+  const userData = auth.decode(req.headers.authorization);
+  if (userData.isAdmin) {
+    productController
+      .updateProduct(req.params, req.body)
+      .then((resultFromController) => res.send(resultFromController));
+  } else {
+    res.send("Unauthorized to update product");
+  }
+});
+
+// archiving a product; admin only
+router.put("/:productId/archive", auth.verify, (req, res) => {
+  const userData = auth.decode(req.headers.authorization);
+  if (userData.isAdmin) {
+    productController
+      .archiveProduct(req.params, req.body)
+      .then((resultFromController) => res.send(resultFromController));
+  }
 });
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Product = require("../models/Product");
 const bcrypt = require("bcrypt");
 const auth = require("../auth");
 
@@ -12,7 +13,7 @@ module.exports.registerUser = (reqBody) => {
   });
   return newUser.save().then((user, err) => {
     if (err) {
-      console.log(err);
+      return false;
     } else {
       return `${newUser.firstName} ${newUser.lastName} is now registered`;
     }
@@ -44,10 +45,44 @@ module.exports.setAdmin = (reqParams, reqBody) => {
     result.isAdmin = reqBody.isAdmin;
     return result.save().then((newAdmin, err) => {
       if (err) {
-        console.log(err);
+        return false;
       } else {
         return `${result.firstName} ${result.lastName} has been successfully set as an admin.`;
       }
     });
   });
 };
+
+// checkout
+// module.exports.checkout = async (data) => {
+//   let addToCart = await User.findById(data.userId).then((user) => {
+//     user.cart.push({ productId: data.productId, quantity: data.quantity });
+//     return user.save().then((user, err) => {
+//       if (err) {
+//         return false;
+//       } else {
+//         return true;
+//       }
+//     });
+//   });
+//   let processOrder = await Product.findById(data.productId).then((product) => {
+//     product.order.push({
+//       userId: data.userId,
+//       quantity: data.quantity,
+//       totalAmount: product.price * data.quantity,
+//     });
+
+//     return product.save().then((product, err) => {
+//       if (err) {
+//         return false;
+//       } else {
+//         return true;
+//       }
+//     });
+//   });
+//   if (addToCart && processOrder) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };

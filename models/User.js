@@ -21,19 +21,23 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  order: [
+  cart: [
     {
       productId: {
         type: String,
         required: [true, "No items!"],
       },
-      purchasedOn: {
-        type: Date,
-        default: new Date(),
+      quantity: {
+        type: Number,
+        default: 1,
       },
       totalAmount: {
         type: Number,
         default: 0,
+      },
+      purchasedOn: {
+        type: Date,
+        default: new Date(),
       },
     },
   ],

@@ -10,7 +10,7 @@ module.exports.createProduct = (reqBody) => {
   });
   return newProduct.save().then((product, err) => {
     if (err) {
-      console.log(err);
+      return false;
     } else {
       return `${newProduct.name} has been successfully created.`;
     }
@@ -28,5 +28,42 @@ module.exports.getActiveProducts = () => {
 module.exports.getAllProducts = () => {
   return Product.find({}).then((result) => {
     return result;
+  });
+};
+
+// retrieve single product
+module.exports.getProduct = (reqParams) => {
+  return Product.findById(reqParams.productId).then((result) => {
+    return result;
+  });
+};
+
+// update product; admin only
+module.exports.updateProduct = (reqParams, reqBody) => {
+  return Product.findByIdAndUpdate(reqParams.productId).then((result) => {
+    result.name = reqBody.name;
+    result.description = reqBody.description;
+    result.price = reqBody.price;
+    return result.save().then((updatedProduct, err) => {
+      if (err) {
+        return false;
+      } else {
+        return `${result.name} has been successfully updated.`;
+      }
+    });
+  });
+};
+
+// archiving a product; admin only
+module.exports.archiveProduct = (reqParams, reqBody) => {
+  return Product.findByIdAndUpdate(reqParams.productId).then((result) => {
+    result.isActive = reqBody.isActive;
+    return result.save().then((archivedProduct, err) => {
+      if (err) {
+        return false;
+      } else {
+        return `${result.name} has been successfully archived.`;
+      }
+    });
   });
 };
