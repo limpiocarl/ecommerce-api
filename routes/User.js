@@ -31,11 +31,11 @@ router.put("/:userId/setAsAdmin", auth.verify, (req, res) => {
 });
 
 // creating an order; authenticated user only
-router.post("/checkout/", auth.verify, async (req, res) => {
+router.post("/checkout", auth.verify, async (req, res) => {
   const userData = auth.decode(req.headers.authorization);
   if (userData.isAdmin == false) {
     let data = {
-      userId: req.body.userId,
+      userId: userData.id,
       productId: req.body.productId,
       quantity: req.body.quantity,
     };
