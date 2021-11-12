@@ -93,7 +93,7 @@ module.exports.checkout = async (data, productData) => {
 // retrieving all orders; admin only
 module.exports.getAllOrders = () => {
   return User.find({})
-    .select("cart")
+    .select("firstName lastName cart")
     .then((result) => {
       return result;
     });
