@@ -39,6 +39,13 @@ module.exports.loginUser = (reqBody) => {
   });
 };
 
+// retrieve all users; admin only
+module.exports.getAllUsers = () => {
+  return User.find({}).then((result) => {
+    return result;
+  });
+};
+
 // set user as admin; admin only
 module.exports.setAdmin = (reqParams, reqBody) => {
   return User.findByIdAndUpdate(reqParams.userId).then((result) => {

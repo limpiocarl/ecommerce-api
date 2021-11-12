@@ -18,6 +18,18 @@ router.post("/login", (req, res) => {
     .then((resultFromController) => res.send(resultFromController));
 });
 
+// retrieve all users; admin only
+router.get("/all", auth.verify, (req, res) => {
+  const userData = auth.decode(req.headers.authorization);
+  if (userData.isAdmin) {
+    userController
+      .getAllUsers()
+      .then((resultFromController) => res.send(resultFromController));
+  } else {
+    res.send("Unauthorized to retrieve all users.");
+  }
+});
+
 // set user as admin; admin only
 router.put("/:userId/setAsAdmin", auth.verify, (req, res) => {
   const userData = auth.decode(req.headers.authorization);
